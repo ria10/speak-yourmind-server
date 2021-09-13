@@ -20,31 +20,18 @@ describe('API server', ()=>{
                     .expect(postsData, done)
     })
 
-    test('should return /posts/:id with correct info and status code', done=>{
-        request(api).get('/posts/:id')
-                    .expect(200)
-                    .expect(postsData.posts[0].req.params.id, done)
-    })
-
-    test('should return /posts/:id with correct info and status code', done=>{
-        request(api).get('/posts')
-                    .expect(200)
-                    .expect(postsData.posts[0].req.params.id, done)
-    })
 
     test('should return /posts/:id/:comments with correct info and status code', done=>{
-        request(api).get('/posts/:id/:comments')
+        request(api).get('/posts/:id')
                     .expect(200)
-                    .expect(postsData.posts[0].req.params.comments, done)
+                    .expect(postsData['posts'][req.params.id-1], done)
     })
 
-    test('should add test post to the postsData', done=> {
-        let testPost = {text: "Hello, this is a test post "}
-        request(api)
-        .post('/posts') 
-        .send(testPost) 
-        .expect(201)
-        .expect(postsData.posts[0].req.params.text).toContain("this is a test post")
-    })
+    test('text property of new post should be a string', done=> {
+        let testPost = {text: "Hello, this is a test post"}
+        request(api).post('/posts').send(testPost)
+        .expect(postsData['posts'][postsData['posts'].length-1].text).toEqual(expect.stringContainin("Hello"))
+
+})
 
 })
