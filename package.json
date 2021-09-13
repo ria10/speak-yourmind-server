@@ -7,8 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "jest --watch",
-    "coverage": "jest --coverage",
+    "test": "jest --color --watchAll",
+    "test:silent": "jest --color --silent",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
