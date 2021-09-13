@@ -14,7 +14,7 @@ route.get('/', (req, res)=>{
 //get all posts
 route.get('/posts', (req, res)=>{
     const postsData =  fs.readFileSync('./model/posts.json', 'utf-8')
-    if(postsData.length === 0) return res.send(401).send({"error":"no posts found"})
+    if(postsData.length === 0) return res.send(400).send({"error":"no posts found"})
 
     res.status(200).send(JSON.parse(postsData))
 })
@@ -99,7 +99,7 @@ function savePost(res, postsObject, post){
     if(postsData.length === 0){
         fs.appendFile(".model/posts.json", JSON.stringify(postsObject),(err)=>{
             if(err) return res.status(500).send({"error":"Server error post not saved"})  
-            res.status(200).send(postsObject)
+            res.status(200).send(post)
         })
     }else{
         const parsedPostsData = JSON.parse(postsData)
