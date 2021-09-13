@@ -10,6 +10,15 @@ route.get('/', (req, res)=>{
     res.send("Hello world")
 })
 
+//get all posts
+route.get('/posts', (req, res)=>{
+    const postsData =  fs.readFileSync('./model/posts.json', 'utf-8')
+    if(postsData.length === 0) return res.send(401).send({"error":"no posts found"})
+
+    res.status(200).send(JSON.parse(postsData))
+})
+
+//create a post
 route.post('/posts', (req, res)=>{
 
     const schema = Joi.object({
@@ -25,7 +34,7 @@ route.post('/posts', (req, res)=>{
          posts:[]
      }
 
-      const post ={
+      const post = {
         id:uuidv4(),
         text:req.body.text,
         comments:[],
@@ -34,6 +43,21 @@ route.post('/posts', (req, res)=>{
     }
 
     savePost(res, postsObjects,post)
+    
+})
+
+//get a single post by id
+route.get('/posts/:id', (req, res)=>{
+    const postsData =  fs.readFileSync('./model/posts.json', 'utf-8')
+    if(postsData.length === 0) return res.send(401).send({"error":"no posts found"})
+
+    const parsedPostsData = JSON.parse(postsData);
+    console.log(parsedPostsData)
+
+    const requiredPost = parsedPostsData.posts.filter((post)=> post.id === req.params.id)
+    console.log('required Post ' + requiredPost)
+    if(requiredPost.length === 0) return  res.send(400).send({"error":"no post found"})
+     res.status(200).send(requiredPost[0]);  
     
 })
 
