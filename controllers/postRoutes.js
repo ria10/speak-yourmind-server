@@ -99,14 +99,16 @@ function savePost(res, postsObject, post){
     if(postsData.length === 0){
         fs.appendFile(".model/posts.json", JSON.stringify(postsObject),(err)=>{
             if(err) return res.status(500).send({"error":"Server error post not saved"})  
-            res.status(200).send(postsObject)
+            console.log("Hi 1")
+            res.status(200).send(post)
         })
     }else{
         const parsedPostsData = JSON.parse(postsData)
         parsedPostsData.posts.push(post)
         fs.writeFile("./model/posts.json", JSON.stringify(parsedPostsData), (err)=>{
             if(err) return res.status(500).send({"error":"Server error post not saved"}) 
-            res.status(200).send(parsedPostsData)
+            console.log('Hi 2')
+            res.status(200).send(post)
         } )
     }
 
