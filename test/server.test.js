@@ -21,15 +21,30 @@ describe('API server', ()=>{
     })
 
     test('should return /posts/:id with correct info and status code', done=>{
-        request(api).get('/posts')
+        request(api).get('/posts/:id')
                     .expect(200)
-                    .expect(postsData.req.params.id, done)
+                    .expect(postsData.posts[0].req.params.id, done)
     })
 
-    test('should return /posts/:comments with correct info and status code', done=>{
-        request(api).get('/posts/:comments')
+    test('should return /posts/:id with correct info and status code', done=>{
+        request(api).get('/posts')
                     .expect(200)
-                    .expect(postsData.req.params.comments, done)
+                    .expect(postsData.posts[0].req.params.id, done)
+    })
+
+    test('should return /posts/:id/:comments with correct info and status code', done=>{
+        request(api).get('/posts/:id/:comments')
+                    .expect(200)
+                    .expect(postsData.posts[0].req.params.comments, done)
+    })
+
+    test('should add test post to the postsData', done=> {
+        let testPost = {text: "Hello, this is a test post "}
+        request(api)
+        .post('/posts') 
+        .send(testPost) 
+        .expect(201)
+        .expect(postsData.posts[0].req.params.text).toContain("this is a test post")
     })
 
 })

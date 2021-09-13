@@ -34,9 +34,6 @@ route.post('/posts', (req, res)=>{
     }
 
     savePost(res, postsObjects,post)
-     
-    
-    
     
 })
 
@@ -55,8 +52,6 @@ function savePost(res, postsObject, post){
             res.status(200).send(parsedPostsData)
         } )
     }
-
-  
 }
 
 
