@@ -32,4 +32,10 @@ describe('API server', ()=>{
                     .expect(postsData.req.params.comments, done)
     })
 
+    test('404 for unknown paths', done => {
+        request(api)
+            .get('/hello')
+            .expect(404, done);
+    })
+
 })
