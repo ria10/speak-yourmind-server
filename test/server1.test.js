@@ -40,4 +40,12 @@ describe('API server', ()=>{
             
         })
 
+        test('should return /posts/:id with correct info and status code', done=>{
+            request(api).get('/posts/3fbc574e-0070-42c1-b848-61a1734067ea')
+                        .expect(200)
+                        .then((req) => {
+                            expect(req.body.text).toEqual("cool");
+                            done();
+                        })
+        })
 })

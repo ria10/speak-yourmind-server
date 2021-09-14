@@ -2,6 +2,7 @@ const request = require('supertest');
 const app = require('../server');
 const port = process.env.PORT || 5000;
 const postsData = require('../model/posts.json');
+
 describe('API server', ()=>{
     let api;
 
@@ -14,26 +15,14 @@ describe('API server', ()=>{
         api.close(done)
     })
 
-    test('should return /posts/:id with correct info and status code', done=>{
-        request(api).get('/posts/:id')
+    test('should return /posts/:id/:comments with correct info and status code', ()=>{
+        request(api).get('/posts/:id/:comments')
                     .expect(200)
-                    .expect(postsData.posts[0].req.params.id, done)
-    })
+                    .then(req => {
+                        expect(req.body.comments);
+                               done();
 
-    test('should return /posts/:id with correct info and status code', done=>{
-        request(api).get('/posts')
-                    .expect(200)
-                    .expect(postsData.posts[0].req.params.id, done)
-    })
-
-    test('should return /posts/:id/comments with correct info and status code', done=>{
-        request(api).get('/posts/:id')
-                    .expect(200).then((req, res)=>{
-                        
                     })
-                    .expect(postsData['posts'][req.params.id-1], done)
     })
-
-    
-    })
+})
 
