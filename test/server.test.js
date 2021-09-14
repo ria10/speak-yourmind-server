@@ -26,23 +26,14 @@ describe('API server', ()=>{
                     .expect(postsData.posts[0].req.params.id, done)
     })
 
-    test('should return /posts/:id/:comments with correct info and status code', done=>{
+    test('should return /posts/:id/comments with correct info and status code', done=>{
         request(api).get('/posts/:id')
-                    .expect(200)
+                    .expect(200).then((req, res)=>{
+                        
+                    })
                     .expect(postsData['posts'][req.params.id-1], done)
     })
 
-    test('should add test post to the postsData', done => {
-        let testPost = {text: "Hello, this is a test post"}
-        request(api)
-        .post('/posts')
-        .send(testPost) 
-        .expect(201)
-        .then((req) => {
-            expect(req.body.text).toEqual("Hello, this is a test post");
-            done();
-        });
-            
-        })
+    
     })
 
