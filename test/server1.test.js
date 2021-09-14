@@ -27,4 +27,25 @@ describe('API server', ()=>{
             .expect(404, done);
     })
 
+    test('should add test post to the postsData', done => {
+        let testPost = {text: "Hello, this is a test post"}
+        request(api)
+        .post('/posts')
+        .send(testPost) 
+        .expect(201)
+        .then((req) => {
+            expect(req.body.text).toEqual("Hello, this is a test post");
+            done();
+        });
+            
+        })
+
+        test('should return /posts/:id with correct info and status code', done=>{
+            request(api).get('/posts/3fbc574e-0070-42c1-b848-61a1734067ea')
+                        .expect(200)
+                        .then((req) => {
+                            expect(req.body.text).toEqual("cool");
+                            done();
+                        })
+        })
 })
