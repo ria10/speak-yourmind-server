@@ -79,8 +79,7 @@ route.post('/post/:postId/comment', (req, res)=>{
         date:dayjs(Date.now()).format('DD-MM-YY HH:mm A')
     }
     const postsContent = fs.readFileSync("./model/posts.json", "utf-8"); //postcontent
-    console.log(postsContent);
-    //console.log(req.params.postId);
+   
     const parsedPostsContent = JSON.parse(postsContent);
     const newArray = parsedPostsContent.posts.filter((post)=>post.id === req.params.postId);
     const index = parsedPostsContent.posts.indexOf(newArray[0])
@@ -116,8 +115,6 @@ function savePost(res, postsObject, post){
             
         } )
     }
-
-  
 }
 
 
