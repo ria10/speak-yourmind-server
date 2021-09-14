@@ -90,10 +90,26 @@ route.post('/post/:postId/comment', (req, res)=>{
         if(err){
            return res.status(500).send({"error":"server error"})
         }else {
-            res.send(parsedPostsContent)
+            res.send(parsedPostsContent.posts[index].comments)
         }
     })
    
+})
+
+
+//get all comments
+route.get('/post/:postId/comment', (req, res)=>{
+    const Posts = fs.readFileSync('./model/posts.json', "utf-8")
+
+    const parsedPosts = JSON.parse(Posts)
+
+  const post =  parsedPosts.posts.find((post)=>{
+       return post.id === req.params.postId
+    })
+
+    if(!post) return res.send({"error":"cant find a matching post"})
+
+    res.send(post.comments);
 })
 
 function savePost(res, postsObject, post){
