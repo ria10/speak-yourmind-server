@@ -59,7 +59,7 @@ route.get('/posts/:id', (req, res)=>{
      res.status(200).send(requiredPost[0]);  
     
 })
-
+//add a comment
 route.post('/post/:postId/comment', (req, res)=>{
     
     const schema = Joi.object({
