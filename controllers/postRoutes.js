@@ -16,7 +16,10 @@ route.get('/posts', (req, res)=>{
     const postsData =  fs.readFileSync('./model/posts.json', 'utf-8')
     if(postsData.length === 0) return res.send(400).send({"error":"no posts found"})
 
-    res.status(200).send(JSON.parse(postsData))
+    const parsedPostsData = JSON.parse(postsData)
+    
+
+    res.status(200).send(parsedPostsData.posts.reverse());
 })
 
 //create a post
@@ -76,8 +79,7 @@ route.post('/post/:postId/comment', (req, res)=>{
         date:dayjs(Date.now()).format('DD-MM-YY HH:mm A')
     }
     const postsContent = fs.readFileSync("./model/posts.json", "utf-8"); //postcontent
-    console.log(postsContent);
-    //console.log(req.params.postId);
+   
     const parsedPostsContent = JSON.parse(postsContent);
     const newArray = parsedPostsContent.posts.filter((post)=>post.id === req.params.postId);
     const index = parsedPostsContent.posts.indexOf(newArray[0])
@@ -88,10 +90,26 @@ route.post('/post/:postId/comment', (req, res)=>{
         if(err){
            return res.status(500).send({"error":"server error"})
         }else {
-            res.send(parsedPostsContent)
+            res.send(parsedPostsContent.posts[index].comments)
         }
     })
    
+})
+
+
+//get all comments
+route.get('/post/:postId/comment', (req, res)=>{
+    const Posts = fs.readFileSync('./model/posts.json', "utf-8")
+
+    const parsedPosts = JSON.parse(Posts)
+
+  const post =  parsedPosts.posts.find((post)=>{
+       return post.id === req.params.postId
+    })
+
+    if(!post) return res.send({"error":"cant find a matching post"})
+
+    res.send(post.comments);
 })
 
 function savePost(res, postsObject, post){
