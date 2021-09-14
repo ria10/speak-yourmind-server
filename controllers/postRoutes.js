@@ -14,7 +14,7 @@ route.get('/', (req, res)=>{
 //get all posts
 route.get('/posts', (req, res)=>{
     const postsData =  fs.readFileSync('./model/posts.json', 'utf-8')
-    if(postsData.length === 0) return res.send(401).send({"error":"no posts found"})
+    if(postsData.length === 0) return res.send(400).send({"error":"no posts found"})
 
     const parsedPostsData = JSON.parse(postsData)
     
@@ -46,8 +46,8 @@ route.post('/posts', (req, res)=>{
         date:dayjs(Date.now()).format('DD-MM-YY HH:mm A')
     }
 
-    savePost(res, postsObjects ,post)
-
+    savePost(res, postsObjects,post)
+      
     
 })
 
@@ -102,8 +102,7 @@ function savePost(res, postsObject, post){
         fs.appendFile(".model/posts.json", JSON.stringify(postsObject),(err)=>{
             if(err) return res.status(500).send({"error":"Server error post not saved"})  
             console.log("Hi 1")
-            res.status(200).send(post)
-         
+            res.status(201).send(post)
         })
     }else{
         const parsedPostsData = JSON.parse(postsData)
@@ -111,8 +110,7 @@ function savePost(res, postsObject, post){
         fs.writeFile("./model/posts.json", JSON.stringify(parsedPostsData), (err)=>{
             if(err) return res.status(500).send({"error":"Server error post not saved"}) 
             console.log('Hi 2')
-            res.status(200).send(post)
-            
+            res.status(201).send(post)
         } )
     }
 }
@@ -121,4 +119,4 @@ function savePost(res, postsObject, post){
 
 
 
-module.exports = route
+module.exports = route;
