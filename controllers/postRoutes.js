@@ -14,7 +14,7 @@ route.get('/', (req, res)=>{
 //get all posts
 route.get('/posts', (req, res)=>{
     const postsData =  fs.readFileSync('./model/posts.json', 'utf-8')
-    if(postsData.length === 0) return res.send(400).send({"error":"no posts found"})
+    if(postsData.length === 0) return res.send({"error":"no posts found"})
 
     const parsedPostsData = JSON.parse(postsData)
     
@@ -31,7 +31,7 @@ route.post('/posts', (req, res)=>{
        
      const result = schema.validate(req.body)
      if(result.error){
-         return res.status(400).send(result.error.details[0].message)
+         return res.send(result.error.details[0].message)
      }
 
      const postsObjects = {
@@ -42,7 +42,9 @@ route.post('/posts', (req, res)=>{
         id:uuidv4(),
         text:req.body.text,
         comments:[],
-        likes:0,
+        likes:[],
+        laughed:[],
+        crying:[],
         date:dayjs(Date.now()).format('DD-MM-YY HH:mm A')
     }
 
@@ -59,7 +61,7 @@ route.get('/posts/:id', (req, res)=>{
     const requiredPost = parsedPostsData.posts.filter((post)=> post.id === req.params.id)
     
     if(requiredPost.length === 0) return  res.send(400).send({"error":"no post found"})
-     res.status(200).send(requiredPost[0]);  
+     res.status(201).send(requiredPost[0]);  
     
 })
 //add a comment
@@ -71,7 +73,7 @@ route.post('/post/:postId/comment', (req, res)=>{
 
     const result = schema.validate(req.body);
 
-    if(result.error) return res.status(400).send(result.error.details[0].message)
+    if(result.error) return res.send(result.error.details[0].message)
     
     const comment = {
         text:req.body.text,
@@ -88,7 +90,7 @@ route.post('/post/:postId/comment', (req, res)=>{
 
     fs.writeFile("model/posts.json", (JSON.stringify(parsedPostsContent)),(err)=>{
         if(err){
-           return res.status(500).send({"error":"server error"})
+           return res.send({"error":"server error"})
         }else {
             res.send(parsedPostsContent.posts[index].comments)
         }
@@ -112,11 +114,81 @@ route.get('/post/:postId/comment', (req, res)=>{
     res.send(post.comments);
 })
 
+
+
+
+route.post('/post/:postId/laugh', (req, res)=>{
+    const laugh = {
+        text:"laughed",
+    }
+    const postsContent = fs.readFileSync("./model/posts.json", "utf-8"); //postcontent
+   
+    const parsedPostsContent = JSON.parse(postsContent);
+    const newArray = parsedPostsContent.posts.filter((post)=>post.id === req.params.postId);
+    const index = parsedPostsContent.posts.indexOf(newArray[0])
+     console.log(parsedPostsContent.posts[index])
+    parsedPostsContent.posts[index].laughed.push(laugh)
+
+
+    fs.writeFile("model/posts.json", (JSON.stringify(parsedPostsContent)),(err)=>{
+        if(err){
+           return res.send({"error":"server error"})
+        }else {
+            res.send(parsedPostsContent.posts[index].laughed)
+        }
+    })
+})
+route.post('/post/:postId/crying', (req, res)=>{
+    const cry = {
+        text:"cry",
+    }
+    const postsContent = fs.readFileSync("./model/posts.json", "utf-8"); //postcontent
+   
+    const parsedPostsContent = JSON.parse(postsContent);
+    const newArray = parsedPostsContent.posts.filter((post)=>post.id === req.params.postId);
+    const index = parsedPostsContent.posts.indexOf(newArray[0])
+     console.log(parsedPostsContent.posts[index])
+    parsedPostsContent.posts[index].crying.push(cry)
+
+
+    fs.writeFile("model/posts.json", (JSON.stringify(parsedPostsContent)),(err)=>{
+        if(err){
+           return res.send({"error":"server error"})
+        }else {
+            res.send(parsedPostsContent.posts[index].crying)
+        }
+    })
+})
+
+route.post('/post/:postId/likes', (req, res)=>{
+    const like = {
+        text:"liked",
+    }
+    const postsContent = fs.readFileSync("./model/posts.json", "utf-8"); //postcontent
+   
+    const parsedPostsContent = JSON.parse(postsContent);
+    const newArray = parsedPostsContent.posts.filter((post)=>post.id === req.params.postId);
+    const index = parsedPostsContent.posts.indexOf(newArray[0])
+     console.log(parsedPostsContent.posts[index])
+    parsedPostsContent.posts[index].likes.push(like)
+
+
+    fs.writeFile("model/posts.json", (JSON.stringify(parsedPostsContent)),(err)=>{
+        if(err){
+           return res.send({"error":"server error"})
+        }else {
+            res.send(parsedPostsContent.posts[index].likes)
+        }
+    })
+})
+
+
+
 function savePost(res, postsObject, post){
     const postsData = fs.readFileSync('./model/posts.json', "utf-8");
     if(postsData.length === 0){
         fs.appendFile(".model/posts.json", JSON.stringify(postsObject),(err)=>{
-            if(err) return res.status(500).send({"error":"Server error post not saved"})  
+            if(err) return res.send({"error":"Server error post not saved"})  
             console.log("Hi 1")
             res.status(201).send(post)
         })
@@ -124,7 +196,7 @@ function savePost(res, postsObject, post){
         const parsedPostsData = JSON.parse(postsData)
         parsedPostsData.posts.push(post)
         fs.writeFile("./model/posts.json", JSON.stringify(parsedPostsData), (err)=>{
-            if(err) return res.status(500).send({"error":"Server error post not saved"}) 
+            if(err) return res.send({"error":"Server error post not saved"}) 
             console.log('Hi 2')
             res.status(201).send(post)
         } )
