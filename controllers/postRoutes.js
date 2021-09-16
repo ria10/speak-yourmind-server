@@ -140,7 +140,6 @@ route.post("/post/:postId/laugh", (req, res) => {
     }
   );
 });
-
 route.post("/post/:postId/crying", (req, res) => {
   const cry = {
     text: "cry",
