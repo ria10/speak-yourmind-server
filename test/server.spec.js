@@ -26,6 +26,16 @@ describe("API server", () => {
             done();
           });
       });
+
+    test("should return /post/:id/likes with correct info and status code", (done) => {
+        request(api)
+          .get("/post/:id/likes")
+          .expect(200)
+          .then((req) => {
+            expect(req.body.likes);
+            done();
+          });
+      });
       
     test("should return /posts with correct info and status code", (done) => {
         request(api)
