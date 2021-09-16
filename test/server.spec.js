@@ -27,12 +27,46 @@ describe("API server", () => {
           });
       });
 
-    test("should return /post/:id/likes with correct info and status code", (done) => {
+    test("should return /post/7f4f4da3-00a7-409a-90e5-9654d1852c44/likes with correct info and status code", (done) => {
         request(api)
-          .get("/post/:id/likes")
+          .post("/post/7f4f4da3-00a7-409a-90e5-9654d1852c44/likes")
+          .send({"text": "liked"})
           .expect(200)
-          .then((req) => {
-            expect(req.body.likes);
+          .then(() => {
+            expect([{text: "liked"}]);
+            done();
+          });
+      });
+
+      test("should return /post/7f4f4da3-00a7-409a-90e5-9654d1852c44/crying with correct info and status code", (done) => {
+        request(api)
+          .post("/post/7f4f4da3-00a7-409a-90e5-9654d1852c44/crying")
+          .send({"text": "liked"})
+          .expect(200)
+          .then(() => {
+            expect([{text: "liked"}]);
+            done();
+          });
+      });
+
+      test("should return /post/7f4f4da3-00a7-409a-90e5-9654d1852c44/laugh with correct info and status code", (done) => {
+        request(api)
+          .post("/post/7f4f4da3-00a7-409a-90e5-9654d1852c44/laugh")
+          .send({"text": "liked"})
+          .expect(200)
+          .then(() => {
+            expect([{text: "liked"}]);
+            done();
+          });
+      });
+
+      test("should return /post/7f4f4da3-00a7-409a-90e5-9654d1852c44/comment with correct info and status code", (done) => {
+        request(api)
+          .post("/post/7f4f4da3-00a7-409a-90e5-9654d1852c44/comment")
+          .send({"text": "liked"})
+          .expect(200)
+          .then(() => {
+            expect([{text: "liked"}]);
             done();
           });
       });

@@ -2,35 +2,40 @@
 
 ## Description
 
-The  website that allows you to anonymously post journal entries.
+Server for the website that allows you to anonymously post journal entries.
 ## Installation & Usage
 
-### Installation 
-- Clone or download the repo.
+### Installation
 
-### Usage
-- Once you have also cloned or downloaded the server side repo, run `open index.html`.
+- Clone or download the repo.
+### Usage 
+
+- Run `npm install` to install node modules.
+- Run `npm start` to start the server.
 ## Technologies
-- HTML
-- CSS
 - JavaScript
-- Bootstrap
-- Toastify
-- Giphy API
+- Express
+- Cors
+- Joi
+- day.js
+- uuid
+- Jest
+- Supertest
 ## Process
 
-- Started by planning the design for our website on Excalidraw.
-- Began writing the base HTML and implemented Bootstrap for the navbar.
-- Worked on the functionalities in `script.js` by adding event listeners to the buttons and the posts in the right section.
-- Worked on the functionalities in `singlepost.js` by adding event listeners to the buttons and getting the comments section to show up.
+- Started by coding the basic structure of the server using `express`.
+- Added `.json` file for storage of posts that are inputted into the front end.
+- Coded the GET and POST endpoints.
+- Added tests for all the endpoints.
 <!-- <placeholder for screenshots> -->
 ## Wins & Challenges
 
 ### Wins
 
+- The structure of the posts that are sending to `posts.json` so that we have a key-value pair for text, comments and all the reactions as well as the generated id's with `uuid`.
+- Understanding properly how testing APIs work with the fetch method.
+- Achieving data validation using `Joi` for the first time.
+
 ### Challenges
 
-- Getting the gifs and the posts to show on the new page through event listener.
-- Getting the counter on the emojis to work.
-
-## Bugs
+- Understanding the fetch requests for the tests to work.
