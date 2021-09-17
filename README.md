@@ -39,3 +39,4 @@ Server for the website that allows you to anonymously post journal entries.
 ### Challenges
 
 - Understanding the fetch requests for the tests to work.
+- Getting the emoji reactions to work on the front end by adjusting the format on the back end from `int` to an array of objects.
